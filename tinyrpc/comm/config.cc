@@ -290,7 +290,6 @@ if (!time_wheel_node->FirstChildElement("bucket_num") || !time_wheel_node->First
   }
 }
 
-
 Config::~Config() {
   if (m_xml_file) {
     delete m_xml_file;
