@@ -35,10 +35,10 @@ std::string formatString(const char* str, Args&& ... args)          //Args&& ...
 }
 
 //日志事件类，包含日志级别、文件名、行号、函数名、日志类型等信息，并提供一个字符串流用于构建日志消息。
+
 #define DebugLog \
 	if (tinyrpc::OpenLog() && tinyrpc::LogLevel::DEBUG >= tinyrpc::gRpcConfig->m_log_level) \
 		tinyrpc::LogTmp(tinyrpc::LogEvent::ptr(new tinyrpc::LogEvent(tinyrpc::LogLevel::DEBUG, __FILE__, __LINE__, __func__, tinyrpc::LogType::RPC_LOG))).getStringStream()
-
 
 #define InfoLog \
 	if (tinyrpc::OpenLog() && tinyrpc::LogLevel::INFO >= tinyrpc::gRpcConfig->m_log_level) \
@@ -130,12 +130,12 @@ private:
     std::stringstream m_ss;   // 字符串流，用于拼接日志具体内容（<< 操作）
 };
 //管理 LogEvent 对象生命周期，利用析构函数自动触发日志输出，简化上层使用
-class logTmp {
+class LogTmp {
 public:
 
-    explicit logTmp(LogEvent::ptr event);   //传入一个 LogEvent 智能指针，由 logTmp 托管
+    explicit LogTmp(LogEvent::ptr event);   //传入一个 LogEvent 智能指针，由 LogTmp 托管
 
-    ~logTmp();
+    ~LogTmp();
 
     std::stringstream& getStringStream();   //获取日志字符串流引用，供外部拼接日志内容。当 logTmp 对象生命周期结束时（如一行日志输出完成），析构函数会自动调用 LogEvent 的 log() 方法，将日志写入文件。
 
